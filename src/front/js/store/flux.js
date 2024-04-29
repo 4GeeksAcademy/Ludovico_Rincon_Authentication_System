@@ -25,7 +25,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                         console.log(data);
                         return true;
                     } else {
-                        // Check for specific error messages
                         const errorData = await response.json();
                         if (errorData.message) {
                             console.error(`Signup error: ${errorData.message}`);

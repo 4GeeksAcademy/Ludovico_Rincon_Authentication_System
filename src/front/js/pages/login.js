@@ -1,15 +1,19 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom";
 import "../../styles/login.css";
 const Login = () => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage,setErrorMessage]=useState("");
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        actions.login(email, password);
+        const loginSuccess = await actions.login(email, password);
+        if (!loginSuccess) {
+            setErrorMessage("Login failed. Please check your credentials.");
+        }
     };
 
     return (
@@ -42,8 +46,13 @@ const Login = () => {
                 Login
             </button>
             <Link to="/signup">
-                    <button className="btn btn-primary mx-5">Register</button>
+                    <button className="btn btn-info mx-5">Go to Register Page</button>
             </Link>
+            {errorMessage && (
+            <div className="alert alert-danger mt-3" role="alert">
+                {errorMessage}
+            </div>
+        )}
         </form>
     );
 };
